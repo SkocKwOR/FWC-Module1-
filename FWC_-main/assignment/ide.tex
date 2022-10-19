@@ -1,0 +1,178 @@
+\def\mytitle{IMPLEMENTATION OF BOOLEAN LOGIC IN IDE}
+\def\myauthor{P.PAVAN KUMAR}
+\def\contact{padmanabhunipavna0@gmail.com}
+\def\mymodule{Future Wireless Communication (FWC)}
+\documentclass[10pt, a4paper]{article}
+\usepackage[a4paper,outer=1.5cm,inner=1.5cm,top=1.75cm,bottom=1.5cm]{geometry}
+\twocolumn
+\usepackage{graphicx}
+\graphicspath{{./images/}}
+\usepackage[colorlinks,linkcolor={black},citecolor={blue!80!black},urlcolor={blue!80!black}]{hyperref}
+\usepackage[parfill]{parskip}
+\usepackage{lmodern}
+\usepackage{tikz}
+%\documentclass[tikz, border=2mm]{standalone}
+\usepackage{karnaugh-map}
+%\documentclass{article}
+\usepackage{tabularx}
+\usepackage{circuitikz}
+\usetikzlibrary{calc}
+
+
+\renewcommand*\familydefault{\sfdefault}
+\usepackage{watermark}
+\usepackage{lipsum}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{float}
+\usepackage{titlesec}
+
+\titlespacing{\subsection}{1pt}{\parskip}{3pt}
+\titlespacing{\subsubsection}{0pt}{\parskip}{-\parskip}
+\titlespacing{\paragraph}{0pt}{\parskip}{\parskip}
+\newcommand{\figuremacro}[5]{
+    \begin{figure}[#1]
+        \centering
+        \includegraphics[width=#5\columnwidth]{#2}
+        \caption[#3]{\textbf{#3}#4}
+        \label{fig:#2}
+    \end{figure}
+}
+
+\lstset{
+frame=single, 
+breaklines=true,
+columns=fullflexible
+}
+
+%\thiswatermark{\centering \put(0,-90){\includegraphics[scale=0.13]{IITH.jpeg}} }
+\title{\mytitle}
+\author{\myauthor\hspace{1em}\\\contact\\FWC22088\hspace{6.5em}IITH\hspace{0.5em}\mymodule\hspace{6em}ASSIGN-1}
+\date{}
+\begin{document}
+	\maketitle
+	\tableofcontents
+	\begin{abstract}
+	    To Obtain the Boolean Expression for the Logic circuit shown below
+	  	\end{abstract}
+	  	
+	   \begin{circuitikz} \draw
+(0,2) node[nand port] (mynand1) {}
+(2,3) node[nand port] (mynand2) {}
+(0,0) node[nand port] (mynand) {}
+(2,-1) node[nand port] (mynand3) {}
+(2,1) node[or port] (myor1) {}
+(4,1) node[or port,number inputs =3] (myor2) {}
+(mynand1.out) -- (myor1.in 1)
+(mynand.out) -- (myor1.in 2)
+(mynand2.out) -- (myor2.in 1)
+(mynand3.out) -- (myor2.in 3)
+(myor1.out) -- (myor2.in 2);
+\node[left] at (mynand1.in 1) {\(A\)};
+\node[left] at (mynand1.in 2) {\(B\)};
+\node[left] at (mynand2.in 1) {\(A\)};
+\node[left] at (mynand2.in 2) {\(A\)};
+\node[left] at (mynand3.in 1) {\(C\)};
+\node[left] at (mynand3.in 2) {\(C\)};
+\node[left] at (mynand1.in 1)[ocirc] {};
+\node[left] at (mynand.in 2) [ocirc] {};
+\node[left] at (mynand.in 1) {\(B\)};
+\node[left] at (mynand.in 2) {\(C\)};
+\node[right] at (mynand1.out) {\((A'B')\)};
+\node[right] at (mynand.out) {\((B'C')\)};
+\node[right] at (mynand2.out) {\((A')\)};
+\node[right] at (mynand3.out) {\((C')\)};
+\node[right] at (myor2.out) {\(Y\)};
+\end{circuitikz}
+\begin{center}
+Fig. 1(Y = A'B'+B'C'+A'+C')
+\end{center}
+
+	\section{Components}
+  \begin{tabularx}{0.4\textwidth} { 
+  | >{\centering\arraybackslash}X 
+  | >{\centering\arraybackslash}X 
+  | >{\centering\arraybackslash}X | }
+\hline
+ \textbf{Components}& \textbf{Values} & \textbf{Quantity}\\
+\hline
+Arduino & UNO & 1 \\  
+\hline
+JumperWires& M-M & 5 \\ 
+\hline
+Breadboard &  & 1 \\
+\hline
+\end{tabularx}
+   \section{Implementation}
+   	\subsection{METHOD-1}
+   	\paragraph{}
+
+The truth table  for Fig. 1 is available in Table-1
+Using Boolean logic, output Y in Table 1 can be expressed in terms of the inputs A, B, C as Y= A'.B'+B'.C'+A'+C' ......(2.1)
+D3,D4,D5 Pins of Arduino are configured as input pins instead of initializing A,B,C inside software,inputs are given manually as A,B,C.led will glow based on Y satisfying the Table-1
+The code below realizes the Boolean logic for Y in Table-1
+
+\begin{center}
+\hspace{10cm}
+\begin{lstlisting}
+https://github.com/SkocKwOR/FWC_/blob/main/assignment/cd1/src/main.cpp
+\end{lstlisting}
+\textbf{ubuntu command line commands}
+\begin{lstlisting}
+pio run.................................................for running
+pio run -t nobuild -t upload.....................for flashing
+\end{lstlisting}
+	\begin{tabularx}{0.4\textwidth} { 
+  | >{\centering\arraybackslash}X 
+  | >{\centering\arraybackslash}X 
+  | >{\centering\arraybackslash}X
+  | >{\centering\arraybackslash}X | }
+\hline
+ A & B & C & Y \\
+\hline
+0 & 0 & 0 & 1 \\  
+\hline
+0 & 0 & 1 & 1 \\ 
+\hline
+0 & 1 & 0 & 1 \\
+\hline
+0 & 1 & 1 & 1 \\
+\hline
+1 & 0 & 0 & 1 \\  
+\hline
+1 & 0 & 1 & 0 \\ 
+\hline
+1 & 1 & 0 & 1 \\
+\hline
+1 & 1 & 1& 0 \\
+\hline
+\end{tabularx}
+ \end{center}
+\begin{center}
+Table-1 
+  \end{center}
+\begin{center}
+\subsection{METHOD-2}
+     \begin{karnaugh-map}[4][2][1][$BC$][$A$]
+        \minterms{0,1,2,3,4,6}
+        \maxterms{5,7}
+        \implicant{0}{2}
+       \implicantedge{0}{4}{2}{6}
+    \end{karnaugh-map}
+\end{center}
+\begin{center}
+Fig. 2
+\end{center}
+    \paragraph{Karnugh Map :}
+The expression in (2.1) can be minimized using the K-map in Fig 2. In Fig.2 ,the implicants in boxes 0,1,2,3 result iS A'
+The implicants in boxes 0,4,2,6 result in C'
+Thus, after minimization using Fig. 2, (2.1) can
+be expressed as
+Y=A'+ C'........(2.2).
+Verify the truth table for Y in TABLE 1.
+The code below realizes the Boolean logic for F in 2.2
+\begin{lstlisting}
+https://github.com/SkocKwOR/FWC_/blob/main/assignment/cd2/src/main.cpp
+\end{lstlisting}
+\bibliographystyle{ieeetr}
+\end{document}
